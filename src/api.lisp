@@ -1,36 +1,29 @@
 (setf (readtable-case *readtable*) :invert)
 
+(ql:quickload :dexador)
+(ql:quickload :cl-json)
+
 (load "utils")
 (load "code")
 
 (defvar *rtms-mobile-url* "http://rtmobile.molit.go.kr/app/main.jsp")
 
-(defvar *rtms-mobile-base-url* "http://rtmobile.molit.go.kr/mobile.do")
+;; (defvar *rtms-mobile-base-url* "http://rtmobile.molit.go.kr/mobile.do")
+(defvar *rtms-mobile-base-url* "http://rtmobile.molit.go.kr/srh/")
 
 (defvar *rtms-url* "http://rt.molit.go.kr/rtApt.do?cmd=srhLocalView")
 
-(defun convert-code (key value)
-  (cond
-    ((eq key :jongryuCode) (getf *jongryu-code* value))
-    ((eq key :gubunCode) (getf *gubun-code* value))
-    ((eq key :gubunCode2) (getf *gubun2-code* value))
-    (t value)))
-
-(defun build-key-value-pair (pair)
-  (let*
-      ((key (car pair))
-       (value (cdr pair))
-       (_value (convert-code key value)))
-    (format nil "~a=~a" key _value)))
-
-(defun url-encode (kwargs)
-  (string/join "&"
-	       (map 'list #'build-key-value-pair kwargs)))
-
-(defun api-url (kwargs)
+(defun api-url (cmd kwargs)
   (let ((param (build-url-param kwargs)))
-    (format nil "~a?~a" *rtms-mobile-base-url* param)))
+    (format nil "~a~a.do?~a" *rtms-mobile-base-url* cmd param)))
 
-(api-url '((:cmd . "getDanjiInfoAjax")
-	   (:jongryuCode . 1)))
+(defun api-request (cmd kwargs)
+  (let* ((url (api-url cmd kwargs))
+	 (content (dex:get url)))
+    content))
 
+(defun api-request-json (cmd kwargs)
+  (json:decode-json-from-string (api-request cmd kwargs)))
+
+(api-request-json "getGugunListAjax"
+		  '((:sidoCode . "11")))
