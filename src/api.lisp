@@ -3,8 +3,8 @@
 (ql:quickload :dexador)
 (ql:quickload :cl-json)
 
-(load "utils")
 (load "code")
+(load "utils")
 
 (defvar *rtms-mobile-url* "http://rtmobile.molit.go.kr/app/main.jsp")
 
@@ -14,7 +14,7 @@
 (defvar *rtms-url* "http://rt.molit.go.kr/rtApt.do?cmd=srhLocalView")
 
 (defun api-url (cmd kwargs)
-  (let ((param (build-url-param kwargs)))
+  (let ((param (url-encode kwargs)))
     (format nil "~a~a.do?~a" *rtms-mobile-base-url* cmd param)))
 
 (defun api-request (cmd kwargs)
@@ -25,5 +25,4 @@
 (defun api-request-json (cmd kwargs)
   (json:decode-json-from-string (api-request cmd kwargs)))
 
-(api-request-json "getGugunListAjax"
-		  '((:sidoCode . "11")))
+(api-request-json "getGugunListAjax" '(:sidoCode "11"))

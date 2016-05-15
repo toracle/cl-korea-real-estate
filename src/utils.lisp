@@ -10,13 +10,12 @@
     ((eq key :gubunCode2) (getf *gubun2-code* value))
     (t value)))
 
-(defun build-key-value-pair (pair)
-  (let*
-      ((key (car pair))
-       (value (cdr pair))
-       (_value (convert-code key value)))
+(defun build-key-value-pair (key value)
+  (let
+       ((_value (convert-code key value)))
     (format nil "~a=~a" key _value)))
 
 (defun url-encode (kwargs)
   (string-join "&"
-	       (map 'list #'build-key-value-pair kwargs)))
+	       (loop for (key value) on kwargs by #'cddr
+		  collect (build-key-value-pair key value))))
