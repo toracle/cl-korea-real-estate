@@ -1,19 +1,19 @@
-(defvar *jongryu-code*
+(defvar *code/jongryu-code*
   '(:아파트 1
     :연립-다세대 2
     :단독-다가구 3
     :오피스텔 5
     :분양/입주권 6))
 
-(defvar *gubun-code*
+(defvar *code/gubun-code*
   '(:매매 1
     :전월세 2))
 
-(defvar *gubun2-code*
+(defvar *code/gubun2-code*
   '(:지번 "LAND"
     :도로명 "ROAD"))
 
-(defvar *sido-list*
+(defvar *code/sido-list*
   '((:sido-code "11" :sido-name "서울특별시")
     (:sido-code "26" :sido-name "부산광역시")
     (:sido-code "27" :sido-name "대구광역시")

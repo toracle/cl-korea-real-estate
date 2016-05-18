@@ -13,16 +13,14 @@
 
 (defvar *rtms-url* "http://rt.molit.go.kr/rtApt.do?cmd=srhLocalView")
 
-(defun api-url (cmd kwargs)
-  (let ((param (url-encode kwargs)))
+(defun api/url (cmd kwargs)
+  (let ((param (utils/url-encode kwargs)))
     (format nil "~a~a.do?~a" *rtms-mobile-base-url* cmd param)))
 
-(defun api-request (cmd kwargs)
-  (let* ((url (api-url cmd kwargs))
+(defun api/request (cmd kwargs)
+  (let* ((url (api/url cmd kwargs))
 	 (content (dex:get url)))
     content))
 
-(defun api-request-json (cmd kwargs)
-  (json:decode-json-from-string (api-request cmd kwargs)))
-
-(api-request-json "getGugunListAjax" '(:sidoCode "11"))
+(defun api/request-json (cmd kwargs)
+  (json:decode-json-from-string (api/request cmd kwargs)))
