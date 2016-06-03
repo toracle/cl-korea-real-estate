@@ -16,7 +16,7 @@
     (format nil "~a=~a" key _value)))
 
 (defun utils/url-encode (kwargs)
-  (string-join "&"
+  (utils/string-join "&"
 	       (loop for (key value) on kwargs by #'cddr
 		  collect (utils/build-key-value-pair key value))))
 
