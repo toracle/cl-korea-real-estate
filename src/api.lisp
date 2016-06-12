@@ -13,7 +13,7 @@
 
 (defvar *rtms-url* "http://rt.molit.go.kr/rtApt.do?cmd=srhLocalView")
 
-(defvar *api-cache-enabled* nil)
+(defvar *api-cache-enabled* t)
 
 (defun api/url (cmd &rest kwargs)
   (let ((param (utils/url-encode kwargs)))
@@ -26,13 +26,11 @@
     content))
 
 (defun api/content-provider (cmd &rest kwargs)
-  (let ((args (cons cmd kwargs))
-	(cache-key (cache/get-cache-key args)))
+  (let* ((args (cons cmd kwargs))
+	 (cache-key (apply #'cache/get-cache-key args)))
     (if *api-cache-enabled*
-	(if (cache/has-cache cache-key)
-	    (cache/get-cache cache-key)
-	    (cache/set-cache cache-key (api/request args)))
-	(api/request args))))
+	(cache/get-or-set-cache cache-key (lambda () (apply #'api/request-json args)))
+	(apply #'api/request-json args))))
 
 (defun api/request-json (cmd &rest kwargs)
   (let ((args (cons cmd kwargs)))

@@ -12,12 +12,6 @@
 (utils/name-code-result-to-alist
  (api/request-json "getGugunListAjax" :sidoCode "11"))
 
-(api/url "getGugunListAjax" :sidoCode "11")
-
-(api/request "getGugunListAjax" :sidoCode "11")
-
-(api/request-json "getGugunListAjax" :sidoCode "11")
-
 (cache/get-cache-key "getGugunListAjax" :sidoCode "11")
 
 (cache/has-cache "data/getGugunListAjax-sidoCode_11.dat")
@@ -25,3 +19,23 @@
 (cache/get-cache "data/getGugunListAjax-sidoCode_11.dat")
 
 (cache/set-cache "data/getGugunListAjax-sidoCode_11.dat" "test1")
+
+(cache/set-cache "data/getGugunListAjax-sidoCode_11.dat" nil)
+
+(cache/get-or-set-cache "data/getGugunListAjax-sidoCode_11.dat"
+			(lambda () (format nil "aaa")))
+
+(api/request-json "getGugunListAjax" :sidoCode "11")
+
+(api/url "getGugunListAjax" :sidoCode "11")
+
+(api/request "getGugunListAjax" :sidoCode "11")
+
+(api/request-json "getGugunListAjax" :sidoCode "11")
+
+(api/content-provider "getGugunListAjax" :sidoCode "11")
+
+
+(setq aaa (lambda () (format nil "aaa")))
+
+

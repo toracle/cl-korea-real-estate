@@ -18,8 +18,15 @@
 	data))))
 
 (defun cache/set-cache (cache-key content)
-  (with-open-file (stream cache-key
-			  :direction :output
-			  :if-exists :supersede)
-    (format stream content)
-    t))
+  (if content
+      (with-open-file (stream cache-key
+			      :direction :output
+			      :if-exists :supersede)
+	(format stream content)
+	content)
+      (delete-file cache-key)))
+
+(defun cache/get-or-set-cache (cache-key content-func)
+  (if (cache/has-cache cache-key)
+      (cache/get-cache cache-key)
+      (cache/set-cache cache-key (funcall content-func))))
