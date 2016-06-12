@@ -1,0 +1,25 @@
+(load "utils")
+
+(defun cache/get-cache-key (cmd &rest kwargs)
+  (let ((key (utils/url-encode kwargs :delim "-" :pair-delim "_"))
+	(fmt (namestring (make-pathname :directory "data" :name "~a-~a" :type "dat"))))
+    (format nil fmt cmd key)))
+
+(defun cache/has-cache (cache-key)
+  (if (probe-file cache-key)
+      t
+      nil))
+
+(defun cache/get-cache (cache-key)
+  (when (cache/has-cache cache-key)
+    (with-open-file (stream cache-key)
+      (let ((data (make-string (file-length stream))))
+	(read-sequence data stream)
+	data))))
+
+(defun cache/set-cache (cache-key content)
+  (with-open-file (stream cache-key
+			  :direction :output
+			  :if-exists :supersede)
+    (format stream content)
+    t))

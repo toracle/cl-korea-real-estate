@@ -1,4 +1,4 @@
-(defun utils/string-join (delim seq)
+(defun utils/string-join (delim &rest seq)
   (let
       ((f (concatenate 'string "~{" delim "~a~}")))
     (subseq (format nil f seq) 1)))
@@ -10,15 +10,16 @@
     ((eq key :gubunCode2) (getf *code/gubun2-code* value))
     (t value)))
 
-(defun utils/build-key-value-pair (key value)
+(defun utils/build-key-value-pair (key value &key (pair-delim "="))
   (let
        ((_value (utils/convert-code key value)))
-    (format nil "~a=~a" key _value)))
+    (format nil "~a~a~a" key pair-delim _value)))
 
-(defun utils/url-encode (kwargs)
-  (utils/string-join "&"
+(defun utils/url-encode (kwargs &key (delim "&") (pair-delim "="))
+  (apply #'utils/string-join
+	 (cons delim
 	       (loop for (key value) on kwargs by #'cddr
-		  collect (utils/build-key-value-pair key value))))
+		  collect (utils/build-key-value-pair key value :pair-delim pair-delim)))))
 
 (defun utils/name-code-to-alist-item (elem)
   (cons
