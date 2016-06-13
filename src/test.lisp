@@ -1,6 +1,7 @@
 (load "api")
 (load "utils")
 (load "cache")
+(load "code")
 
 
 (utils/url-encode '(:sidoCode "11"))
@@ -35,7 +36,8 @@
 
 (api/content-provider "getGugunListAjax" :sidoCode "11")
 
+(api/request-json "getDongListAjax" :sidoCode "11" :gugunCode "11620")
 
-(setq aaa (lambda () (format nil "aaa")))
+(api/gugun-list :sidoCode "11")
 
-
+(api/gugun-list)

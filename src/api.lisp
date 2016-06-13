@@ -29,9 +29,17 @@
   (let* ((args (cons cmd kwargs))
 	 (cache-key (apply #'cache/get-cache-key args)))
     (if *api-cache-enabled*
-	(cache/get-or-set-cache cache-key (lambda () (apply #'api/request-json args)))
+	(json:decode-json-from-string (cache/get-or-set-cache cache-key
+							      (lambda () (apply #'api/request args))))
 	(apply #'api/request-json args))))
 
 (defun api/request-json (cmd &rest kwargs)
   (let ((args (cons cmd kwargs)))
     (json:decode-json-from-string (apply #'api/request args))))
+
+(defun api/gugun-list (&key sidoCode)
+  (if sidoCode
+      (utils/name-code-result-to-alist (api/content-provider "getGugunListAjax" :sidoCode sidoCode))
+      (map 'list
+	   #'(lambda (elem) (api/gugun-list :sidoCode (getf elem :sido-code)))
+	   *code/sido-list*)))
