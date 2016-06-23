@@ -41,5 +41,5 @@
       (utils/name-code-result-to-alist
        (api/content-provider "getGugunListAjax"
 			     :sidoCode (getf (getf *code/sido-list* sido) :sido-code)))
-      (apply 'concatenate 'list (loop for (key _) on *code/sido-list* by #'cddr
-	   collect (api/gugun-list :sido key)))))
+      (apply 'concatenate 'list (utils/loop-plist-collect (key _) *code/sido-list*
+							  (api/gugun-list :sido key)))))

@@ -22,8 +22,8 @@
 (defun utils/url-encode (kwargs &key (delim "&") (pair-delim "="))
   (apply #'utils/string-join
 	 (cons delim
-	       (loop for (key value) on kwargs by #'cddr
-		  collect (utils/build-key-value-pair key value :pair-delim pair-delim)))))
+	       (utils/loop-plist-collect (key value) kwargs
+		  (utils/build-key-value-pair key value :pair-delim pair-delim)))))
 
 (defun utils/name-code-to-alist-item (elem)
   (cons
