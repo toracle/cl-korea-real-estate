@@ -3,6 +3,8 @@
 (load "cache")
 (load "code")
 
+(utils/loop-plist-collect (key value) '(:name "jeongsoo" :age 30)
+		     (cons key value))
 
 (utils/url-encode '(:sidoCode "11"))
 
