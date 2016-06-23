@@ -1,3 +1,7 @@
+(defmacro utils/loop-plist-collect (key-value-variable plist &rest body)
+  `(loop for ,key-value-variable on ,plist by #'cddr
+      collect ,@body))
+
 (defun utils/string-join (delim &rest seq)
   (let
       ((f (concatenate 'string "~{" delim "~a~}")))
