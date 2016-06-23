@@ -34,3 +34,14 @@
   (map 'list
        #'utils/name-code-to-alist-item
        (cdr (car result))))
+
+(defun utils/get-region (lst key value)
+  (car (remove-if-not #'(lambda (x) (string= (getf x key) value))
+		 lst)))
+
+(defun utils/get-region-code (lst key value key2)
+  (getf (utils/get-region lst key value) key2))
+
+(defun utils/add-region-info (before new)
+  (concatenate before new))
+

@@ -42,7 +42,7 @@
 
 (utils/name-code-result-to-alist
  (api/content-provider :getGugunListAjax
-		       :sidoCode (getf (getf *code/sido-list* :서울특별시) :sido-code)))
+		       :sidoCode (utils/get-region-code *code/sido-list* :sido-name "서울특별시" :sido-code)))
 
 (api/gugun-list :sido :서울특별시)
 
@@ -51,6 +51,8 @@
 (getf *code/sido-list* :서울특별시)
 
 (getf *code/gubun-code* :전월세)
+
+(utils/get-region *code/sido-list* :sido-name "서울특별시")
 
 ;; 관악구 11620
 
