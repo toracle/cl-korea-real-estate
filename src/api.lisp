@@ -36,9 +36,10 @@
   (let ((args (cons cmd kwargs)))
     (json:decode-json-from-string (apply #'api/request args))))
 
-(defun api/gugun-list (&key sidoCode)
-  (if sidoCode
-      (utils/name-code-result-to-alist (api/content-provider "getGugunListAjax" :sidoCode sidoCode))
-      (map 'list
-	   #'(lambda (elem) (api/gugun-list :sidoCode (getf elem :sido-code)))
-	   *code/sido-list*)))
+(defun api/gugun-list (&key sido)
+  (if sido
+      (utils/name-code-result-to-alist
+       (api/content-provider "getGugunListAjax"
+			     :sidoCode (getf (getf *code/sido-list* sido) :sido-code)))
+      (apply 'concatenate 'list (loop for (key _) on *code/sido-list* by #'cddr
+	   collect (api/gugun-list :sido key)))))
