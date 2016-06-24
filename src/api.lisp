@@ -1,10 +1,4 @@
-(setf (readtable-case *readtable*) :invert)
-
-(ql:quickload :dexador)
-(ql:quickload :cl-json)
-
-(load "code")
-(load "utils")
+(in-package :cl-korea-real-estate)
 
 (defparameter *rtms-mobile-url* "http://rtmobile.molit.go.kr/app/main.jsp")
 
