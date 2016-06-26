@@ -1,7 +1,7 @@
-(load "api")
+(load "code")
 (load "utils")
 (load "cache")
-(load "code")
+(load "api")
 
 (utils/loop-plist-collect (key value) '(:name "jeongsoo" :age 30)
 		     (cons key value))
