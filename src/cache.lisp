@@ -1,9 +1,13 @@
 (load "utils")
 
 (defun cache/get-cache-key (cmd &rest kwargs)
-  (let ((key (utils/url-encode kwargs :delim "-" :pair-delim "_"))
-	(fmt (namestring (make-pathname :directory "data" :name "~a-~a" :type "dat"))))
-    (format nil fmt cmd key)))
+  (let* ((key (utils/url-encode kwargs
+				:delim "-"
+				:pair-delim "_"))
+	 (filename (format nil "~a-~a" cmd key)))
+    (namestring (make-pathname :directory "data"
+			       :name filename
+			       :type "dat"))))
 
 (defun cache/has-cache (cache-key)
   (if (probe-file cache-key)
@@ -19,11 +23,13 @@
 
 (defun cache/set-cache (cache-key content)
   (if content
-      (with-open-file (stream cache-key
-			      :direction :output
-			      :if-exists :supersede)
-	(format stream content)
-	content)
+      (let ((parent-dir (pathname cache-key)))
+	(ensure-directories-exist parent-dir)
+	(with-open-file (stream cache-key
+				:direction :output
+				:if-exists :supersede)
+	  (format stream content)
+	  content))
       (delete-file cache-key)))
 
 (defun cache/get-or-set-cache (cache-key content-func)
